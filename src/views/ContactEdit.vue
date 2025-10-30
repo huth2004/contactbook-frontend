@@ -7,6 +7,21 @@
             @delete:contact="deleteContact" />
         <p>{{ message }}</p>
     </div>
+    <div v-else class="page">
+        <h4>Thêm mới liên hệ</h4>
+        <ContactForm
+            :contact="{ 
+                name: '', 
+                email: '', 
+                address: '', 
+                phone: '', 
+                favorite: false 
+            }"
+            @submit:contact="createContact"
+            @delete:contact="deleteContact"
+        />
+        <p>{{ message }}</p>
+    </div>
 </template>
 
 <script>
@@ -43,6 +58,16 @@ export default {
                     query: this.$route.query,
                     hash: this.$route.hash,
                 });
+            }
+        },
+
+        async createContact(data) {
+            try {
+                await ContactService.create(data);
+                alert('Liên hệ được tạo thành công.');
+                this.$router.push({ name: "contactbook" });
+            } catch (error) {
+                console.log(error);
             }
         },
 
